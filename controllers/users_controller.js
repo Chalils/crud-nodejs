@@ -1,48 +1,78 @@
 const db = require("../models");
 const Users = db.users;
 const Op = db.Sequelize.Op;
+
 // Create and Save a new Users
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.nama) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
-    // Create a Users
-    const tutorial = {
-      nama: req.body.nama,
-      description: req.body.description,
-      published: req.body.published ? req.body.published : false
-    };
-    // Save Users in the database
-    Users.create(tutorial)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Users."
-        });
-      });
-  };
+// exports.create = (req, res) => {
+//     // Validate request
+//     if (!req.body.nama) {
+//       res.status(400).send({
+//         message: "Content can not be empty!"
+//       });
+//       return;
+//     }
+//     // Create a Users
+//     const tutorial = {
+//       nama: req.body.nama,
+//       description: req.body.description,
+//       published: req.body.published ? req.body.published : false
+//     };
+//     // Save Users in the database
+//     Users.create(tutorial)
+//       .then(data => {
+//         res.send(data);
+//       })
+//       .catch(err => {
+//         res.status(500).send({
+//           message:
+//             err.message || "Some error occurred while creating the Users."
+//         });
+//       });
+//   };
+
 // Retrieve all Tutorials from the database.
-exports.findAll = (req, res) => {
-    const nama = req.query.nama;
-    var condition = nama ? { nama: { [Op.like]: `%${nama}%` } } : null;
-    Users.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving users."
+// exports.findAll = (req, res) => {
+//   const nama = req.query.nama;
+//   var condition = nama ? { nama: { [Op.like]: `%${nama}%` } } : null;
+//   Users.findAll({ where: condition })
+//     .then(data => {
+//       res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while retrieving users."
+//       });
+//     });
+// };
+
+exports.create= async(req, res)=>
+{
+   try {
+       const response = await Users.create({
+          nama       : req.body.nama,
+          description: req.body.description
         });
-      });
-  };
+      //  res.json(response);
+      console.log('Membuat data berhasil'); 
+   } catch (error) {
+       console.log(error.message); 
+   }
+}
+
+exports.findAll= async(req, res)=>
+{
+   try {
+      const nama = req.query.nama;
+      var condition = nama ? { nama: { [Op.like]: `%${nama}%` } } : null;
+      const response = await Users.findAll({condition});
+      res.json(response);
+   } catch (error) {
+      console.log(error.message); 
+   }
+}
+
+
 // Find a single Users with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;
@@ -111,7 +141,7 @@ exports.delete = (req, res) => {
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
     Users.destroy({
-      where: {},
+      where   : {},
       truncate: false
     })
       .then(nums => {

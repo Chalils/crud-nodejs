@@ -1,0 +1,13 @@
+- npm install express --save				-> untuk install framework node js
+- npm install nodemon --save-dev			-> untuk nodemon (jadi sewaktu ada perubahan langsung otomatis restart)
+- npm install --save sequelize				-> semacam builder query JS
+- npx express-generator					-> express generator
+- npm install cookie-parser
+- set DEBUG=meraseti:* & npm start
+
+- express --view=pug app
+- npm install --save express jade pug
+- set DEBUG=app:* & npm start
+
+- npm install --save mysql2
+- npm install cors

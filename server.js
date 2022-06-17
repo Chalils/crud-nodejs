@@ -6,10 +6,10 @@ const run = async () => {
   const controller = require("./controllers/createdata");
 
   // Create and Save a new Orders
-const usr1 = await controller.createUser({
-  nama: "User 1",
-  description: "User 1 Description",
-});
+  const usr1 = await controller.createUser({
+    nama: "User 1",
+    description: "User 1 Description",
+  });
 
   // Create and Save a new Orders
   const usr2 = await controller.createUser({
@@ -49,10 +49,14 @@ var corsOptions = {
   origin: "http://localhost:3000"
 };
 app.use(cors(corsOptions));
+// var bodyParser = require('body-parser');
+var formData = require('express-form-data');
 // parse requests of content-type - application/json
-app.use(express.json());
+// app.use(express.json());
+// app.use(formData.json());
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+app.use(formData.parse());
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to application." });
